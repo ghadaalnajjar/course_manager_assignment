@@ -22,7 +22,7 @@ public class CourseTest {
 
     @BeforeEach
     void before(){
-        student = new Student(11,"Anna Andrson", "anna2008@yahoo.com", "Sungatan 12");
+
         course =new Course(10, "Java", LocalDate.parse("2020-06-18"), 22, Arrays.asList(student));
         courseTest =new Course(20, "C++", LocalDate.parse("2020-07-20"), 18, Arrays.asList(student));
     }
