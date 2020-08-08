@@ -15,12 +15,16 @@ public class CourseTest {
     private Course course;
 
     @Autowired
+    private Course courseTest;
+
+    @Autowired
     private Student student;
 
     @BeforeEach
     void before(){
         student = new Student(11,"Anna Andrson", "anna2008@yahoo.com", "Sungatan 12");
         course =new Course(10, "Java", LocalDate.parse("2020-06-18"), 22, Arrays.asList(student));
+        courseTest =new Course(20, "C++", LocalDate.parse("2020-07-20"), 18, Arrays.asList(student));
     }
 
     @Test
@@ -38,10 +42,30 @@ public class CourseTest {
     @Test
     void unenrollStudentTest() {
         //Act
-        Student s = new Student(12,"Ilyas Mark", "ilyas2@yahoo.com", "allgatan");
+        Student studentTest = new Student(22,"Ilyas Mark", "ilyas2@yahoo.com", "allgatan");
 
         //assert
-        assertFalse(course.unenrollStudent(s));
+        assertFalse(course.unenrollStudent(studentTest));
+    }
+
+    @Test
+    void equalNullTest() {
+        assertFalse(course.equals(null));
+    }
+
+    @Test
+    void hashCodesTest() {
+        assertNotEquals(course,courseTest);
+
+        assertTrue(course.hashCode() != courseTest.hashCode());
+    }
+
+    @Test
+    void toStringToStudentTest() {
+        //Act
+        String s = course.toString();
+        //Assert
+        assertEquals(course.toString(),s);
     }
 
 }
