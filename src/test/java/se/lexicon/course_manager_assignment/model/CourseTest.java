@@ -29,7 +29,7 @@ public class CourseTest {
 
     @Test
     void enrollstudentTest() {
-        //assert
+        //Assert
         assertFalse(course.enrollStudent(student));
     }
 
@@ -63,9 +63,9 @@ public class CourseTest {
     @Test
     void toStringToStudentTest() {
         //Act
-        String s = course.toString();
+        String toString = course.toString();
         //Assert
-        assertEquals(course.toString(),s);
+        assertEquals(course.toString(),toString);
     }
 
 }

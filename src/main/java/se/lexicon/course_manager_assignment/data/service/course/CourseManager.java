@@ -8,9 +8,13 @@ import se.lexicon.course_manager_assignment.data.service.converter.Converters;
 import se.lexicon.course_manager_assignment.dto.forms.CreateCourseForm;
 import se.lexicon.course_manager_assignment.dto.forms.UpdateCourseForm;
 import se.lexicon.course_manager_assignment.dto.views.CourseView;
+import se.lexicon.course_manager_assignment.model.Course;
+import se.lexicon.course_manager_assignment.model.Student;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -29,56 +33,105 @@ public class CourseManager implements CourseService {
 
     @Override
     public CourseView create(CreateCourseForm form) {
-        return null;
+        Course course = courseDao.createCourse(form.getCourseName(), form.getStartDate(), form.getWeekDuration());
+        return converters.courseToCourseView(course);
     }
 
     @Override
     public CourseView update(UpdateCourseForm form) {
-        return null;
+        Course course = courseDao.findById(form.getId());
+        if (course != null) {
+            course.setCourseName(form.getCourseName());
+            course.setStartDate(form.getStartDate());
+            course.setWeekDuration(form.getWeekDuration());
+
+        }
+        return converters.courseToCourseView(course);
     }
 
     @Override
     public List<CourseView> searchByCourseName(String courseName) {
-        return null;
+        Collection<Course> courses = courseDao.findByNameContains(courseName);
+        if (courses == null) {
+            return null;
+        } else {
+            return converters.coursesToCourseViews(courses);
+        }
     }
 
     @Override
     public List<CourseView> searchByDateBefore(LocalDate end) {
-        return null;
+        Collection<Course> courses = courseDao.findByDateBefore(end);
+        if (courses == null) {
+            return null;
+        } else {
+            return converters.coursesToCourseViews(courses);
+        }
     }
 
     @Override
     public List<CourseView> searchByDateAfter(LocalDate start) {
-        return null;
+        Collection<Course> courses = courseDao.findByDateAfter(start);
+        if (courses == null) {
+            return null;
+        } else {
+            return converters.coursesToCourseViews(courses);
+        }
     }
 
     @Override
     public boolean addStudentToCourse(int courseId, int studentId) {
-        return false;
+        Student student = studentDao.findById(studentId);
+        Course course = courseDao.findById(courseId);
+        if (student== null || course == null) {
+            return false;
+        }
+        return course.enrollStudent(student);
     }
 
     @Override
     public boolean removeStudentFromCourse(int courseId, int studentId) {
-        return false;
+        Student student = studentDao.findById(studentId);
+        Course course = courseDao.findById(courseId);
+        if (student== null || course == null ) {
+            return false;
+        }
+        return course.unenrollStudent(student);
     }
 
     @Override
     public CourseView findById(int id) {
-        return null;
+        Course course = courseDao.findById(id);
+        if (course == null) {
+            return null;
+        } else {
+            return converters.courseToCourseView(course);
+        }
     }
 
     @Override
     public List<CourseView> findAll() {
-        return null;
+        Collection<Course> courses = courseDao.findAll();
+        if (courses == null) {
+            return null;
+        } else {
+            return converters.coursesToCourseViews(courses);
+        }
     }
 
     @Override
     public List<CourseView> findByStudentId(int studentId) {
-        return null;
+        Collection<Course> courses = courseDao.findByStudentId(studentId);
+        if (courses == null) {
+            return null;
+        } else {
+            return converters.coursesToCourseViews(courses);
+        }
     }
+
 
     @Override
     public boolean deleteCourse(int id) {
-        return false;
+        return courseDao.removeCourse(courseDao.findById(id));
     }
 }

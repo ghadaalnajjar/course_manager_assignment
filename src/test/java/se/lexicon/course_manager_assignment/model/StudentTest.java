@@ -14,8 +14,7 @@ public class StudentTest {
     @BeforeEach
     void beforeEach() {
         stud1 = new Student(11, "Anna Anderson", "anna1980@yahoo.com", "Sungatan 12");
-        stud2 = new Student(22,"Ilyas Mark", "ilyas2@yahoo.com", "allgatan");
-
+        stud2 = new Student(22,"Ilyas Mark", "ilyas2@yahoo.com", "Allgatan");
     }
 
     @Test
@@ -50,8 +49,10 @@ public class StudentTest {
     @Test
     void toStringToStudentTest() {
         //Act
-        String s = stud1.toString();
+        stud1 = new Student(11, "Anna Anderson", "anna1980@yahoo.com", "Sungatan 12");
+        String toString = stud1.toString();
         //Assert
-        assertEquals(stud1.toString(),s);
+        assertTrue(toString.contains("11") && toString.contains("Anna Anderson") && toString.contains("anna1980@yahoo.com") && toString.contains("Sungatan 12"));
+        assertEquals(stud1.toString(),toString);
     }
 }

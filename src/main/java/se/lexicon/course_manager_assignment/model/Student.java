@@ -20,6 +20,9 @@ public class Student {
         this.address = address;
     }
 
+    public Student() {
+    }
+
     //Getters and Setters
     public int getId() {
         return id;

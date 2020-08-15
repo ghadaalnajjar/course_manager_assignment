@@ -9,8 +9,10 @@ import se.lexicon.course_manager_assignment.data.service.converter.ModelToDto;
 import se.lexicon.course_manager_assignment.dto.forms.CreateStudentForm;
 import se.lexicon.course_manager_assignment.dto.forms.UpdateStudentForm;
 import se.lexicon.course_manager_assignment.dto.views.StudentView;
+import se.lexicon.course_manager_assignment.model.Student;
 
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -29,36 +31,64 @@ public class StudentManager implements StudentService {
 
     @Override
     public StudentView create(CreateStudentForm form) {
-        return null;
+        Student student = studentDao.createStudent(form.getName(), form.getEmail(), form.getAddress());
+        return converters.studentToStudentView(student);
     }
 
     @Override
     public StudentView update(UpdateStudentForm form) {
+        Student toUpdate = studentDao.findById(form.getId());
+        if (toUpdate != null) {
+            toUpdate.setName(form.getName());
+            toUpdate.setEmail(form.getEmail());
+            toUpdate.setAddress(form.getAddress());
+            return converters.studentToStudentView(toUpdate);
+        }
         return null;
     }
 
     @Override
     public StudentView findById(int id) {
-        return null;
+        Student student = studentDao.findById(id);
+        if (student == null) {
+            return null;
+        } else {
+            return converters.studentToStudentView(student);
+        }
     }
 
     @Override
     public StudentView searchByEmail(String email) {
-        return null;
+        Student student = studentDao.findByEmailIgnoreCase(email);
+        if(student == null) {
+            return null;
+        } else {
+            return converters.studentToStudentView(student);
+        }
     }
 
     @Override
     public List<StudentView> searchByName(String name) {
-        return null;
+        Collection<Student> students = studentDao.findByNameContains(name);
+        if(students == null) {
+            return null;
+        } else {
+            return converters.studentsToStudentViews(students);
+        }
     }
 
     @Override
     public List<StudentView> findAll() {
-        return null;
+        Collection<Student> students = studentDao.findAll();
+        if(students == null) {
+            return null;
+        } else {
+            return converters.studentsToStudentViews(students);
+        }
     }
 
     @Override
     public boolean deleteStudent(int id) {
-        return false;
+        return studentDao.removeStudent(studentDao.findById(id));
     }
 }

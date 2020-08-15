@@ -19,6 +19,16 @@ public class Course {
         this.students = students;
     }
 
+    public Course() {
+    }
+
+    public Course(int nextCourseId, String courseName, LocalDate startDate, int weekDuration) {
+        this.id = nextCourseId;
+        this.courseName = courseName;
+        this.startDate = startDate;
+        this.weekDuration = weekDuration;
+    }
+
     public int getId() {
         return id;
     }
